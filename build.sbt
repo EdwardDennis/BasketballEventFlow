@@ -5,9 +5,7 @@ ThisBuild / scalaVersion := "3.3.1"
 lazy val root = (project in file("."))
   .settings(
     name := "basketballScoring",
-    coverageEnabled := true,
-    logBuffered in Test := false,
-    parallelExecution in Test := false
+    coverageEnabled := true
   )
 
 

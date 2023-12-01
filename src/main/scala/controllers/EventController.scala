@@ -1,7 +1,6 @@
 package controllers
 
 import models.*
-import services.DataService
 import utils.Logging
 
 class EventController() extends Logging {

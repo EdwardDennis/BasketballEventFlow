@@ -1,11 +1,13 @@
 package controllers
 
 import models.*
-import services.{DataService, GameService}
-import utils.Logging
 import services.GameServiceImpl
+import utils.Logging
 
-class GameController(dataController: DataController, eventController: EventController, gameService: GameService) extends Logging {
+trait GameController extends Logging {
+  val eventController = new EventController()
+  val gameService = new GameServiceImpl()
+
   def decodeEvent(hexValue: Int): Unit = {
     eventController.getDecodedEvent(hexValue) match {
       case Some(event) => handleDecodedEvent(event)
@@ -52,17 +54,13 @@ class GameController(dataController: DataController, eventController: EventContr
   }
 }
 
-object GameController extends Logging {
+object GameControllerImpl extends GameController with Logging {
   @main def main(args: String*): Unit = {
-    val dataService = new DataService
-    val dataController = new DataController(dataService)
-    val eventController = new EventController
-    val gameService = new GameServiceImpl()
-    val gameController = new GameController(dataController, eventController, gameService)
+    val dataController = new DataController()
 
     args.headOption match {
-      case Some("sample1") => dataController.getData("sample1").foreach(_.foreach(hexValue => gameController.decodeEvent(hexValue)))
-      case Some("sample2") => dataController.getData("sample2").foreach(_.foreach(hexValue => gameController.decodeEvent(hexValue)))
+      case Some("sample1") => dataController.getData("sample1").foreach(_.foreach(hexValue => decodeEvent(hexValue)))
+      case Some("sample2") => dataController.getData("sample2").foreach(_.foreach(hexValue => decodeEvent(hexValue)))
       case _ => logger.error("Invalid argument. Please provide either 'sample1' or 'sample2'.")
     }
   }

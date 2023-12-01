@@ -1,21 +1,14 @@
 package controllers
 
-import services.DataService
+import data.{sampleOne, sampleTwo}
 import utils.Logging
 
-class DataController(dataService: DataService) extends Logging {
-  def getData(filename: String): Option[Seq[Int]] = {
-    val data = filename match {
-      case "sample1" => dataService.getSampleOneData
-      case "sample2" => dataService.getSampleTwoData
-      case _ => throw new IllegalArgumentException("Invalid filename")
-    }
-
-    data match {
-      case Right(values) => Some(values)
-      case Left(ex) =>
-        logger.error(s"Error reading sample data: ${ex.getMessage}")
-        None
+class DataController extends Logging {
+  def getData(sampleData: String): Option[Seq[Int]] = {
+    sampleData match {
+      case "sample1" => Some(sampleOne)
+      case "sample2" => Some(sampleTwo)
+      case _ => None
     }
   }
 }

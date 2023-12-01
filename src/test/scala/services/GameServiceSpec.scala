@@ -59,6 +59,12 @@ class GameServiceSpec extends AnyWordSpec with Matchers with BeforeAndAfterEach 
         gameService.getLastNEvents(3) shouldBe Some(List((0, testEvent), (1, testEvent2)))
       }
     }
+    "return an empty list" when {
+      "called with 0" in {
+        gameService.addEvent(testEvent)
+        gameService.getLastNEvents(0) shouldBe Some(List.empty)
+      }
+    }
     "return None" when {
       "called with a negative number" in {
         gameService.addEvent(testEvent)
