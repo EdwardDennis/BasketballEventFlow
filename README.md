@@ -20,10 +20,10 @@ The logic of the application is controlled from the `GameController`. Here is a 
 For event storage, the system uses a `TrieMap`. The `TrieMap` is a thread-safe concurrent data structure, which is effective for this use case, where concurrent access and modification of the event store is common. A `TrieMap` offers efficient, non-blocking, snapshot and look-up operations in constant time (O(1)). This is especially important for this application since consistent analysis of the stored events is a key operation.
 
 ### To run with sample 1 data:
-``sbt run 'sample1'``
+``sbt 'run sample1'``
 
 ### To run with sample 2 data:
-``sbt run 'sample2'``
+``sbt 'run sample2'``
 
 ### To run tests:
 ``sbt test``
