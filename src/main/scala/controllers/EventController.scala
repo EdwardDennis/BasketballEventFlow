@@ -13,6 +13,7 @@ class EventController() extends Logging {
       val totalPoints = getTotalPoints(hexValue)
       val elapsedMatchTime = getElapsedMatchTime(hexValue)
       val scoringTeam = getScoringTeam(hexValue)
+
       (scoringTeam, pointsScored, totalPoints, elapsedMatchTime) match {
         case (Some(scoringTeam), Some(pointsScored), Some(totalPoints), Some(elapsedMatchTime)) =>
           val event = Event(scoringTeam, pointsScored, totalPoints, elapsedMatchTime)

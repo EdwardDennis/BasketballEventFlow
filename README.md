@@ -17,7 +17,7 @@ The logic of the application is controlled from the `GameController`. Here is a 
 
 6. Valid events are then added to an event store for further processing.
 
-For event storage, the system uses a `TrieMap`. The `TrieMap` is a thread-safe concurrent data structure, which is effective for this use case, where concurrent access and modification of the event store is common. A `TrieMap` offers efficient, non-blocking, snapshot and look-up operations in constant time (O(1)). This is especially important for this application since consistent analysis of the stored events is a key operation.
+For event storage, the system uses a List[Event] where events are prepended to the list as it offers efficient, near-constant time, append operation. As a result, the events are stored effectively in a reverse order. When we retrieve the events, we just reverse the list which gives us all events in the order they occurred.
 
 ### To run with sample 1 data:
 ``sbt 'run sample1'``

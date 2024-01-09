@@ -5,8 +5,8 @@ import services.GameServiceImpl
 import utils.Logging
 
 trait GameController extends Logging {
-  val eventController = new EventController()
-  val gameService = new GameServiceImpl()
+  val eventController: EventController = new EventController()
+  val gameService: GameServiceImpl = new GameServiceImpl()
 
   def decodeEvent(hexValue: Int): Unit = {
     eventController.getDecodedEvent(hexValue) match {

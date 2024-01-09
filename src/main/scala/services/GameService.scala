@@ -2,35 +2,25 @@ package services
 
 import models.Event
 
-import java.util.concurrent.atomic.AtomicInteger
-import scala.collection.concurrent
-import scala.collection.concurrent.TrieMap
+protected trait GameService {
+  protected def addEvent(event: Event): Unit
 
-trait GameService {
-  val currentId: AtomicInteger
-  val eventStore: concurrent.Map[Int, Event]
+  protected def getAllEvents: List[Event]
 
-  def addEvent(event: Event): Unit = {
-    val nextId = currentId.getAndIncrement()
-    eventStore.addOne(nextId -> event)
-  }
+  protected def getLastEvent: Option[Event]
 
-  def getAllEvents: Seq[(Int, Event)] = eventStore.toSeq.sortBy { case (id, _) => id }
+  protected def getLastNEvents(n: Int): List[Event]
 
-  def getLastEvent: Option[Event] = eventStore.get(currentId.get() - 1)
-
-  def getLastNEvents(numberOfEvents: Int): Option[Seq[(Int, Event)]] = {
-    if (numberOfEvents < 0) {
-      None
-    } else {
-      val events = eventStore.toSeq.sortBy { case (id, _) => id }.takeRight(numberOfEvents)
-      Some(events)
-    }
-  }
 }
 
 class GameServiceImpl extends GameService {
-  val currentId = new AtomicInteger(0)
-  val eventStore: concurrent.Map[Int, Event] = concurrent.TrieMap.empty[Int, Event]
-}
+  private var eventStore: List[Event] = List.empty
 
+  override def addEvent(event: Event): Unit = eventStore ::= event
+
+  override def getAllEvents: List[Event] = eventStore.reverse
+
+  override def getLastEvent: Option[Event] = eventStore.headOption
+
+  override def getLastNEvents(n: Int): List[Event] = eventStore.take(n).reverse
+}
